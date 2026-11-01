@@ -80,7 +80,7 @@ options: {
 
         {/* BODY */}
 
-        <div className="p-10">
+        <div className="p-10"><a href="https://www.codex-us.net/" className="mb-6 block rounded-lg bg-slate-950 px-6 py-4 text-center font-semibold text-white">Continue with Codexus Portal</a><p className="mb-6 text-sm text-slate-500">Use your Portal account to open your company’s enabled apps, or use the existing email sign-in below.</p>
 
           {!sent ? (
             <>

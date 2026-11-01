@@ -1,0 +1,16 @@
+{
+  "target": null,
+  "targets": [
+    "newsletter-asfp",
+    "newsletter-comfort",
+    "newsletter-mahi",
+    "newsletter-codexus"
+  ],
+  "mode": "server",
+  "exchange": "/auth/portal/exchange",
+  "successPath": "/admin",
+  "loginPaths": [
+    "/login"
+  ],
+  "callbackUrl": "https://codexus-newsletter.vercel.app/auth/portal"
+}

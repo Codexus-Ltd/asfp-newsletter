@@ -1,0 +1,1 @@
+export default function PortalSignIn(){return <main style={{minHeight:'80vh',display:'grid',placeItems:'center',fontFamily:'Arial'}}><p role="status">Connecting your Codexus Portal account…</p></main>}
