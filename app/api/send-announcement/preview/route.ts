@@ -1,3 +1,4 @@
+import {applyWebsiteBrand} from "@/lib/website-brand.mjs";
 import {
   NextRequest,
   NextResponse,
@@ -47,6 +48,8 @@ export async function POST(
         { status: 404 }
       );
     }
+
+    await applyWebsiteBrand(company);
 
     let author: {
       id: string;

@@ -1,3 +1,4 @@
+import {applyWebsiteBrand} from "@/lib/website-brand.mjs";
 import { supabase } from "@/lib/supabase";
 import { notFound } from "next/navigation";
 import PollCard from "@/components/PollCard";
@@ -215,6 +216,8 @@ export default async function NewsletterPage({
   // =====================================================
   // BRANDING
   // =====================================================
+
+  await applyWebsiteBrand(company);
 
   const primaryColour =
     company.primary_colour ||
@@ -886,3 +889,4 @@ export default async function NewsletterPage({
     </main>
   );
 }
+

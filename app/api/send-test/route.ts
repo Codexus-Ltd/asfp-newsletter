@@ -1,3 +1,4 @@
+import {applyWebsiteBrand} from "@/lib/website-brand.mjs";
 import { NextRequest, NextResponse } from "next/server";
 import { Resend } from "resend";
 import { supabase } from "@/lib/supabase";
@@ -95,6 +96,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    await applyWebsiteBrand(company);
     const primaryColour = company.primary_colour || "#1E2D5A";
     const secondaryColour = company.secondary_colour || "#F52B3A";
     const companyName = escapeHtml(company.name);
@@ -206,3 +208,4 @@ export async function POST(request: NextRequest) {
     );
   }
 }
+

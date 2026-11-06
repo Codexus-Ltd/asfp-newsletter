@@ -1,3 +1,4 @@
+import {applyWebsiteBrand} from "@/lib/website-brand.mjs";
 import { NextRequest, NextResponse } from "next/server";
 import { Resend } from "resend";
 import { supabase } from "@/lib/supabase";
@@ -341,6 +342,8 @@ export async function POST(
         { status: 404 }
       );
     }
+
+    await applyWebsiteBrand(company);
 
     const {
       data: latestIssue,
@@ -708,3 +711,4 @@ export async function POST(
     );
   }
 }
+

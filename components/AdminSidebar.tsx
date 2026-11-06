@@ -1,3 +1,5 @@
+import WebsiteTheme from "./WebsiteTheme";
+import {fetchWebsiteBrand} from "@/lib/website-brand.mjs";
 import Link from "next/link";
 import SignOutButton from "@/components/SignOutButton";
 
@@ -16,7 +18,7 @@ type AdminSidebarProps = {
   platformAdmin?: boolean;
 };
 
-export default function AdminSidebar({
+export default async function AdminSidebar({
   companies = [],
   currentCompany = null,
   platformAdmin = false,
@@ -34,10 +36,11 @@ export default function AdminSidebar({
     )}`;
   }
 
-const sidebarColour = "#111318";
+const brand=await fetchWebsiteBrand(currentCompany?.slug);
+const sidebarColour = brand?.sidebar||"#111318";
 
   const secondaryColour =
-    currentCompany?.secondary_colour ||
+    brand?.accent || currentCompany?.secondary_colour ||
     "#DC2626";
 
   return (
@@ -47,17 +50,18 @@ const sidebarColour = "#111318";
     backgroundColor: sidebarColour,
   }}
 >
+      <WebsiteTheme brand={brand}/>
       {/* PLATFORM HEADER */}
 
       <div className="border-b border-white/10 p-6">
 <img
-  src="/Codexus-logo.png"
-  alt="Codexus"
-  className="mx-auto h-20 w-20 object-contain"
+  src={brand?.logo_url||"/Codexus-logo.png"}
+  alt={brand?.name||"Codexus"}
+  className="mx-auto h-20 w-52 object-contain"
 />
 
         <h2 className="mt-4 text-center text-xl font-bold">
-          CODEXUS
+          {brand?.name||"CODEXUS"}
         </h2>
 
         <p className="mt-1 text-center text-sm text-white/70">
@@ -196,3 +200,4 @@ const sidebarColour = "#111318";
     </aside>
   );
 }
+

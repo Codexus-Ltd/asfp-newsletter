@@ -32,3 +32,5 @@ body {
   color: rgb(15, 23, 42);
   background: rgb(241, 245, 249);
 }
+
+[data-website-company] h1,[data-website-company] h2{font-family:var(--website-heading)}[data-website-company] button.bg-orange-500,[data-website-company] a.bg-orange-500{background:var(--website-accent)}

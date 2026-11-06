@@ -1,3 +1,4 @@
+import {applyWebsiteBrand} from "@/lib/website-brand.mjs";
 import AdminSidebar from "@/components/AdminSidebar";
 import SendAnnouncement from "@/components/SendAnnouncement";
 import { createSupabaseServerClient } from "@/lib/supabase-server";
@@ -145,6 +146,8 @@ if (authorsError) {
 
 const authors = authorRows ?? [];
 
+  await applyWebsiteBrand(currentCompany);
+
   return (
     <div className="flex">
       <AdminSidebar
@@ -211,3 +214,4 @@ const authors = authorRows ?? [];
     </div>
   );
 }
+

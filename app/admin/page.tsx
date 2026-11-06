@@ -1,3 +1,4 @@
+import {fetchWebsiteBrand} from "@/lib/website-brand.mjs";
 import AdminSidebar from "@/components/AdminSidebar";
 import { supabase } from "@/lib/supabase";
 import { createSupabaseServerClient } from "@/lib/supabase-server";
@@ -163,8 +164,9 @@ if (profile?.platform_admin) {
 
   // Codexus application colours are fixed.
   // Company colours are reserved for customer-facing communications.
-  const primaryColour = "#111318";
-  const secondaryColour = "#F97316";
+  const brand=await fetchWebsiteBrand(currentCompany.slug);
+  const primaryColour = brand?.sidebar||"#111318";
+  const secondaryColour = brand?.accent||"#F97316";
 
   // =====================================================
   // TENANT-SCOPED SUBSCRIBERS
@@ -845,3 +847,4 @@ if (profile?.platform_admin) {
     </div>
   );
 }
+

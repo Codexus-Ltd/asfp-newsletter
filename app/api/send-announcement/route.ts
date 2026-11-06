@@ -1,3 +1,4 @@
+import {applyWebsiteBrand} from "@/lib/website-brand.mjs";
 import { NextRequest, NextResponse } from "next/server";
 import { Resend } from "resend";
 import { supabase } from "@/lib/supabase";
@@ -949,6 +950,8 @@ const {
         { status: 404 }
       );
     }
+
+    await applyWebsiteBrand(company);
 
     let emailAuthor: {
   id: string;
@@ -2272,3 +2275,4 @@ author: campaignAuthor,
     );
   }
 }
+
