@@ -237,10 +237,11 @@ export default async function NewsletterPage({
   const isAsfp =
     company.slug === "asfp";
 
+  const isCollected = company.slug === "collected-comforts";
   const newsletterHeading =
     isAsfp
       ? "ASFP Industry Update"
-      : `${companyName} Update`;
+      : isCollected ? "The Collected Edit" : `${companyName} Update`;
 
   const greetingText =
     isAsfp
@@ -274,7 +275,7 @@ export default async function NewsletterPage({
   // =====================================================
 
   return (
-    <main className="min-h-screen bg-slate-100 py-10">
+    <main className={"min-h-screen bg-slate-100 py-10" + (isCollected ? " collected-edition" : "")}>
 
       {/* MAIN NEWSLETTER */}
 
@@ -618,6 +619,14 @@ export default async function NewsletterPage({
         </div>
 
       </div>
+
+      {isCollected && (
+        <footer className="mx-auto max-w-[760px] px-6 py-10 text-center">
+          <p className="text-sm text-[#777469]">Clothing, homewares and lovely finds. Collected by Chantal.</p>
+          <a href="https://www.collectedco.co.nz/catalog.html" className="mt-6 inline-block bg-[#6d745a] px-7 py-4 text-sm text-white">Explore the collection →</a>
+          <p className="mt-5 text-sm"><a href="https://www.collectedco.co.nz/about.html#contact" className="text-[#6d745a] underline">Visit the studio by arrangement</a></p>
+        </footer>
+      )}
 
       {/* POLLS */}
 

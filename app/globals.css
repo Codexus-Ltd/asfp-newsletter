@@ -34,3 +34,27 @@ body {
 }
 
 [data-website-company] h1,[data-website-company] h2{font-family:var(--website-heading)}[data-website-company] button.bg-orange-500,[data-website-company] a.bg-orange-500{background:var(--website-accent)}
+
+/* Collected Co. — ivory, sage and quiet editorial typography. */
+[data-website-company="collected-comforts"] body{background:#faf9f6;color:#403f36}
+[data-website-company="collected-comforts"] aside{background:#f0eee6!important;color:#403f36}
+[data-website-company="collected-comforts"] aside :is(p,h2,a,button){color:#676b5b}
+[data-website-company="collected-comforts"] aside a[style]{color:white}
+[data-website-company="collected-comforts"] aside :is(.border-b,.border-t){border-color:#ddd9ce}
+[data-website-company="collected-comforts"] main{background:#faf9f6}
+.collected-edition{background:#faf9f6;color:#403f36;font-family:Arial,sans-serif}
+.collected-edition #pdf-main{max-width:760px;background:#fff;box-shadow:none;border:1px solid #ddd9ce;border-radius:0}
+.collected-edition #pdf-main>div:first-child{background:#faf9f6!important;color:#403f36;text-align:center;border-bottom:1px solid #ddd9ce;padding:42px 30px}
+.collected-edition #pdf-main>div:first-child>div{display:block}
+.collected-edition #pdf-main>div:first-child img{width:320px;max-width:100%;height:auto;margin:0 auto 28px}
+.collected-edition h1,.collected-edition h2,.collected-edition h3{font-family:Georgia,serif;font-weight:400!important;letter-spacing:-.025em;color:#403f36!important}
+.collected-edition h1{font-size:42px}.collected-edition h2{font-size:34px;line-height:1.2}
+.collected-edition #pdf-main>div:first-child p{color:#777469}
+.collected-edition #pdf-main>div:nth-child(2){background:#f0eee6;border-color:#ddd9ce}
+.collected-edition #pdf-main>div:last-child{padding:42px}
+.collected-edition article{border-color:#ddd9ce}
+.collected-edition article>p:first-child{font-size:10px;letter-spacing:.18em}
+.collected-edition article>div{font-size:15px;line-height:1.9;color:#777469}
+.collected-edition blockquote{background:#faf9f6;font-family:Georgia,serif;color:#6d745a}
+.collected-edition figure img{border-radius:0}
+@media(max-width:600px){.collected-edition{padding:15px 12px}.collected-edition #pdf-main>div:first-child{padding:30px 22px}.collected-edition #pdf-main>div:last-child,.collected-edition #pdf-main>div:nth-child(2){padding:28px 22px}.collected-edition h1{font-size:32px}.collected-edition h2{font-size:29px}}
