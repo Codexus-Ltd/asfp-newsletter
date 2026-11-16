@@ -537,6 +537,11 @@ export default async function NewsletterPage({
                                   {paragraph}
                                 </p>
                               ))}
+                            {block.caption && (
+                              <p lang="en" className="mb-6 whitespace-pre-line text-sm leading-6 text-slate-500">
+                                {block.caption}
+                              </p>
+                            )}
                           </div>
                         );
                       }
