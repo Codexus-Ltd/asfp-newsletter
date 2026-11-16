@@ -100,6 +100,11 @@ export async function POST(request: NextRequest) {
     const primaryColour = company.primary_colour || "#1E2D5A";
     const secondaryColour = company.secondary_colour || "#F52B3A";
     const companyName = escapeHtml(company.name);
+    const collected = company.slug === "collected-comforts";
+    const paper = collected ? "#faf9f6" : "#f1f5f9";
+    const ink = collected ? "#403f36" : "#1e293b";
+    const panel = collected ? "#f0eee6" : "#f8fafc";
+    const heading = collected ? "font-family:Georgia,serif;font-weight:400;" : "";
     const subscriberName = escapeHtml(subscriber.name?.trim() || "Member");
 
     const newsletterUrl =
@@ -119,21 +124,21 @@ export async function POST(request: NextRequest) {
     const html = `
       <!DOCTYPE html>
       <html>
-        <body style="margin:0;padding:0;background:#f1f5f9;font-family:Arial,Helvetica,sans-serif;color:#1e293b;">
+        <body style="margin:0;padding:0;background:${paper};font-family:Arial,Helvetica,sans-serif;color:${ink};">
           <div style="max-width:700px;margin:0 auto;padding:30px 15px;">
             <div style="background:#ffffff;border-radius:10px;overflow:hidden;">
-              <div style="background:${primaryColour};padding:25px 30px;text-align:center;border-bottom:4px solid ${secondaryColour};">
+              <div style="background:${collected ? paper : primaryColour};padding:30px;text-align:center;border-bottom:4px solid ${secondaryColour};">
                 ${logoHtml}
               </div>
               <div style="padding:35px;line-height:1.7;">
-                <div style="margin-bottom:20px;padding:10px 14px;background:#fff7ed;border:1px solid #fed7aa;border-radius:6px;color:#9a3412;font-size:13px;font-weight:bold;">
+                <div style="margin-bottom:20px;padding:10px 14px;background:${collected ? panel : "#fff7ed"};border:1px solid ${collected ? "#ddd9ce" : "#fed7aa"};border-radius:6px;color:${collected ? secondaryColour : "#9a3412"};font-size:13px;font-weight:bold;">
                   PROOF EMAIL — ${companyName}
                 </div>
-                <h2 style="color:${primaryColour};margin:0 0 20px 0;">Hello ${subscriberName},</h2>
+                <h2 style="${heading}color:${primaryColour};margin:0 0 20px 0;">Hello ${subscriberName},</h2>
                 <p>Thank you for your continued interest in <strong>${companyName}</strong>.</p>
                 <p>We hope you enjoy this edition of our newsletter.</p>
-                <div style="margin:28px 0;padding:20px;background:#f8fafc;border-left:4px solid ${secondaryColour};">
-                  <div style="color:${primaryColour};font-size:22px;font-weight:bold;">
+                <div style="margin:28px 0;padding:20px;background:${panel};border-left:4px solid ${secondaryColour};">
+                  <div style="${heading}color:${primaryColour};font-size:26px;">
                     ${escapeHtml(issue.title || "Newsletter")}
                   </div>
                   <div style="margin-top:6px;color:#64748b;font-size:14px;">
@@ -164,8 +169,12 @@ export async function POST(request: NextRequest) {
       </html>
     `;
 
-    const companyFromEmail =
-      company.sender_email
+    // Collected's Gmail mailbox is a reply-to, not a verified sending domain.
+    // Keep this proof on the configured sending transport with its own branding.
+    const transportAddress = fromEmail.match(/<([^<>]+)>/)?.[1] || fromEmail;
+    const companyFromEmail = collected
+      ? `Collected Co. <${transportAddress.trim()}>`
+      : company.sender_email
         ? `${company.sender_name || company.name} <${company.sender_email}>`
         : fromEmail;
 
