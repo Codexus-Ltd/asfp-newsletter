@@ -76,7 +76,16 @@ export default async function SubscribersPage({
 
   let companies: Company[] = [];
 
-  if (companyIds.length > 0) {
+  // Match the dashboard and API: platform admins can manage all active companies.
+  if (profile?.platform_admin) {
+    const { data: companyData } = await supabase
+      .from("companies")
+      .select("id,name,slug,logo_url,primary_colour,secondary_colour")
+      .eq("active", true)
+      .order("name", { ascending: true });
+
+    companies = (companyData ?? []) as Company[];
+  } else if (companyIds.length > 0) {
     const { data: companyData } =
       await supabase
         .from("companies")
