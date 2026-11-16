@@ -1,3 +1,4 @@
+import { supabase as issueDatabase } from "@/lib/supabase";
 import AdminSidebar from "@/components/AdminSidebar";
 import NewsletterBuilder from "@/components/NewsletterBuilder";
 import {createSupabaseServerClient} from "@/lib/supabase-server";
@@ -10,6 +11,6 @@ export default async function Page({params,searchParams}:{params:Promise<{issueI
  if(p?.platform_admin){const {data:a}=await db.from("companies").select("id").eq("active",true);ids=a?.map(x=>x.id)??[];}
  const {data:r}=await db.from("companies").select("id,name,slug,logo_url,primary_colour,secondary_colour").in("id",ids).eq("active",true).order("name");
  const companies=r??[];if(!companies.length)redirect("/admin");const c=(q.company?companies.find(x=>x.slug===q.company):null)??companies[0];
- const id=Number(issueId);if(!Number.isFinite(id))notFound();const {data:i}=await db.from("issues").select("*").eq("id",id).eq("company_id",c.id).maybeSingle();if(!i)notFound();
+ const id=Number(issueId);if(!Number.isFinite(id))notFound();const {data:i}=await issueDatabase.from("issues").select("*").eq("id",id).eq("company_id",c.id).maybeSingle();if(!i)notFound();
  return <div className="flex"><AdminSidebar companies={companies as any} currentCompany={c as any} platformAdmin={p?.platform_admin??false}/><main className="flex-1 bg-slate-100 p-10"><NewsletterBuilder currentCompany={c} issue={i}/></main></div>;
 }

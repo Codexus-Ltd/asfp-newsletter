@@ -1,3 +1,4 @@
+import { supabase as issueDatabase } from "@/lib/supabase";
 import { createSupabaseServerClient } from "@/lib/supabase-server";
 import { redirect } from "next/navigation";
 
@@ -47,7 +48,7 @@ export default async function NewsletterBuilderEntry({ searchParams }: Props) {
       ? companies.find((c) => c.slug === params.company)
       : null) ?? companies[0];
 
-  const { data: issue } = await supabase
+  const { data: issue } = await issueDatabase
     .from("issues")
     .select("id")
     .eq("company_id", company.id)

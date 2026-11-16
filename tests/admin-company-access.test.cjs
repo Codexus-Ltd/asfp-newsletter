@@ -65,3 +65,45 @@ for (const page of ['subscribers', 'issues', 'polls', 'email']) {
     await assert.rejects(render(page, true, [], false), /redirect:\/login/);
   });
 }
+
+async function openEditor({ signedIn = true, platformAdmin = true, requestedCompany = 'codexus', issueCompany = 'codexus-id' } = {}) {
+  const calls = [];
+  const userDb = {
+    auth: { getUser: async () => ({ data: { user: signedIn ? { id: 'ben' } : null } }) },
+    from(table) {
+      const rows = table === 'profiles' ? { platform_admin: platformAdmin }
+        : table === 'company_users' ? [{ company_id: 'other-id' }]
+        : companies.filter(c => c.active && (platformAdmin || c.id === 'other-id'));
+      const q = { select() { return q; }, eq() { return q; }, in() { return q; }, order() { return q; }, single: async () => ({ data: rows }), then(resolve) { return Promise.resolve({data: rows}).then(resolve); } };
+      return q;
+    },
+  };
+  const issueDb = { from(table) {
+    assert.equal(table, 'issues');
+    const q = { select() { return q; }, eq(key, value) { calls.push([key, value]); return q; }, maybeSingle: async () => ({ data: calls.some(([k, v]) => k === 'company_id' && v === issueCompany) ? { id: 6, company_id: issueCompany } : null }) };
+    return q;
+  }};
+  const code = ts.transpileModule(fs.readFileSync('app/admin/issues/[issueId]/page.tsx', 'utf8'), { compilerOptions: {module: ts.ModuleKind.CommonJS, jsx: ts.JsxEmit.ReactJSX} }).outputText;
+  const exports = {};
+  vm.runInNewContext(code, { exports, require(name) {
+    if (name === '@/lib/supabase') return {supabase: issueDb};
+    if (name === '@/lib/supabase-server') return {createSupabaseServerClient: async () => userDb};
+    if (name === 'next/navigation') return {redirect: () => {throw Error('login');}, notFound: () => {throw Error('not found');}};
+    if (name.startsWith('@/components/')) return {default: () => null};
+    return require(name);
+  }});
+  await exports.default({params: Promise.resolve({issueId: '6'}), searchParams: Promise.resolve({company: requestedCompany})});
+  return calls;
+}
+test('issue editor loads issue only within the authorised company', async () => {
+  assert.deepEqual(await openEditor(), [['id', 6], ['company_id', 'codexus-id']]);
+});
+test('issue editor rejects an issue from another company', async () => {
+  await assert.rejects(openEditor({issueCompany: 'other-id'}), /not found/);
+});
+test('issue editor does not let ordinary members select another company', async () => {
+  await assert.rejects(openEditor({platformAdmin: false}), /not found/);
+});
+test('issue editor requires an authenticated user', async () => {
+  await assert.rejects(openEditor({signedIn: false}), /login/);
+});
