@@ -1,3 +1,4 @@
+import { supabase as campaignDatabase } from "@/lib/supabase";
 import AdminSidebar from "@/components/AdminSidebar";
 import SubscriberSearch from "@/components/SubscriberSearch";
 import SendNewsletterButtons from "@/components/SendNewsletterButtons";
@@ -67,13 +68,13 @@ export default async function EmailPage({ searchParams }: Props) {
       : null) ?? companies[0];
 
   const [issueResult, countResult, subscribersResult] = await Promise.all([
-    supabase.from("issues").select("*")
+    campaignDatabase.from("issues").select("*")
       .eq("company_id", currentCompany.id)
       .order("id", { ascending: false })
       .limit(1).maybeSingle(),
-    supabase.from("subscribers").select("*", { count: "exact", head: true })
+    campaignDatabase.from("subscribers").select("*", { count: "exact", head: true })
       .eq("company_id", currentCompany.id).eq("active", true),
-    supabase.from("subscribers").select("*")
+    campaignDatabase.from("subscribers").select("*")
       .eq("company_id", currentCompany.id).eq("active", true)
       .order("name", { ascending: true }).limit(100),
   ]);
